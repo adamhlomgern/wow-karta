@@ -436,6 +436,8 @@ a { color: var(--stuga); }
   position: relative;
   cursor: pointer;
   transition: box-shadow 0.15s, border-color 0.15s;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .card:hover, .card.is-highlighted {
   box-shadow: var(--shadow-sm);
@@ -458,6 +460,7 @@ a { color: var(--stuga); }
   display: flex;
   align-items: center;
   gap: 7px;
+  min-width: 0;
 }
 .card-title::before {
   content: "";
