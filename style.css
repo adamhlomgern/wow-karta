@@ -840,6 +840,9 @@ a { color: var(--stuga); }
   #filter-row, #amenity-filter-row {
     flex-wrap: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
+    touch-action: pan-x;
+    overscroll-behavior-y: none;
     scrollbar-width: none;
     padding-top: 8px;
     padding-bottom: 8px;
