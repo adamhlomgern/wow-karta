@@ -391,8 +391,14 @@ a { color: var(--stuga); }
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
 }
+#filter-row::-webkit-scrollbar { display: none; }
+.filter-chip { flex-shrink: 0; }
 .filter-chip {
   font-size: 11.5px;
   font-weight: 600;
@@ -421,14 +427,19 @@ a { color: var(--stuga); }
 .filter-chip.active.f-stallplats { background: var(--stallplats); border-color: var(--stallplats); color: #fff; }
 .filter-chip.active.f-taltplats { background: var(--taltplats); border-color: var(--taltplats); color: #fff; }
 #amenity-filter-row {
-  padding: 0 20px 10px;
+  padding: 8px 20px 12px;
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 12px;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
 }
+#amenity-filter-row::-webkit-scrollbar { display: none; }
+.amenity-chip { flex-shrink: 0; }
 .amenity-chip {
   font-size: 11px;
   font-weight: 500;
@@ -503,6 +514,27 @@ a { color: var(--stuga); }
 .card.type-hotell .card-title::before { background: var(--hotell); }
 .card.type-stallplats .card-title::before { background: var(--stallplats); }
 .card.type-taltplats .card-title::before { background: var(--taltplats); }
+.card-toggle {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.15s, background 0.15s;
+}
+.card-toggle:hover { background: var(--panel-alt); }
+.card.expanded .card-toggle { transform: rotate(180deg); }
+.card-details {
+  display: none;
+}
+.card.expanded .card-details { display: block; }
 .card-badges {
   display: flex;
   align-items: center;
@@ -837,17 +869,7 @@ a { color: var(--stuga); }
     align-self: center;
   }
   #add-place-btn .btn-label { display: none; }
-  #filter-row, #amenity-filter-row {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
-    mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
-  }
-  #filter-row::-webkit-scrollbar, #amenity-filter-row::-webkit-scrollbar { display: none; }
-  .filter-chip, .amenity-chip { flex-shrink: 0; }
+  #filter-row, #amenity-filter-row { padding-top: 8px; padding-bottom: 8px; }
   #legend { display: none; }
 
   /* Listvyn ska kännas som en riktig helskärmssida, inte en ruta som flyter

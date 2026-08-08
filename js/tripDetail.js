@@ -468,21 +468,25 @@ function renderList() {
     } else {
       distStr = `<span class="dist-pending">Beräknar körväg</span>`;
     }
+    const hasMeta = !!(priceStr || data.link || data.notes);
     return `
       <div class="card type-${data.type}" data-id="${data.id}" tabindex="0" role="button" aria-label="Zooma till ${esc(data.name)} på kartan">
         <div class="card-top">
           <div class="card-title">${data.is_favorite ? '<span class="fav-star" title="Favorit">★</span> ' : ''}${esc(data.name)}</div>
-        </div>
-        <div class="card-badges">${badges.join('')}</div>
-        <div class="card-meta">
-          ${priceStr ? `💰 ${priceStr}<br>` : ''}
-          ${data.link ? `🔗 <a href="${esc(data.link)}" target="_blank" rel="noopener">Länk</a><br>` : ''}
-          ${data.notes ? esc(data.notes) : ''}
+          <button type="button" class="card-toggle" data-id="${data.id}" aria-label="Visa mer" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
         </div>
         <div class="card-dist">${distStr}</div>
-        <div class="card-actions">
-          <button class="edit" data-id="${data.id}">${iconEdit} Redigera</button>
-          <button class="del" data-id="${data.id}">${iconTrash} Ta bort</button>
+        <div class="card-details">
+          <div class="card-badges">${badges.join('')}</div>
+          ${hasMeta ? `<div class="card-meta">
+            ${priceStr ? `💰 ${priceStr}<br>` : ''}
+            ${data.link ? `🔗 <a href="${esc(data.link)}" target="_blank" rel="noopener">Länk</a><br>` : ''}
+            ${data.notes ? esc(data.notes) : ''}
+          </div>` : ''}
+          <div class="card-actions">
+            <button class="edit" data-id="${data.id}">${iconEdit} Redigera</button>
+            <button class="del" data-id="${data.id}">${iconTrash} Ta bort</button>
+          </div>
         </div>
       </div>
     `;
@@ -496,17 +500,25 @@ function renderList() {
 
   list.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.card-actions') || e.target.closest('.dist-retry')) return;
+      if (e.target.closest('.card-actions') || e.target.closest('.dist-retry') || e.target.closest('.card-toggle')) return;
       goToCard(card);
     });
     card.addEventListener('keydown', (e) => {
-      if (e.target.closest('.card-actions') || e.target.closest('.dist-retry')) return;
+      if (e.target.closest('.card-actions') || e.target.closest('.dist-retry') || e.target.closest('.card-toggle')) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToCard(card); }
     });
     card.addEventListener('mouseenter', () => setMarkerHighlight(card.dataset.id, true));
     card.addEventListener('mouseleave', () => setMarkerHighlight(card.dataset.id, false));
     card.addEventListener('focus', () => setMarkerHighlight(card.dataset.id, true));
     card.addEventListener('blur', () => setMarkerHighlight(card.dataset.id, false));
+  });
+  list.querySelectorAll('.card-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.card');
+      const expanded = card.classList.toggle('expanded');
+      btn.setAttribute('aria-expanded', String(expanded));
+    });
   });
   list.querySelectorAll('.edit').forEach(btn => {
     btn.addEventListener('click', (e) => {
