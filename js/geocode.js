@@ -1,7 +1,24 @@
 // Fri, nyckelfri platssökning via OpenStreetMap Nominatim.
-export async function searchPlace(query) {
+// opts.near = { lat, lon } biasar resultaten mot ett område (t.ex. resans
+// resmål) utan att utesluta träffar längre bort — viktigt för sökningar på
+// specifika campingar/ställplatser som annars dränks av mer "viktiga"
+// platser globalt.
+export async function searchPlace(query, opts = {}) {
   if (!query || query.trim().length < 2) return [];
-  const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&q=${encodeURIComponent(query)}&limit=5&accept-language=sv`;
+  const params = new URLSearchParams({
+    format: 'jsonv2',
+    addressdetails: '1',
+    q: query,
+    limit: '10',
+    'accept-language': 'sv',
+  });
+  if (opts.near && opts.near.lat != null && opts.near.lon != null) {
+    const { lat, lon } = opts.near;
+    const delta = 1.5;
+    params.set('viewbox', `${lon - delta},${lat + delta},${lon + delta},${lat - delta}`);
+    params.set('bounded', '0');
+  }
+  const url = `https://nominatim.openstreetmap.org/search?${params.toString()}`;
   try {
     const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
     if (!res.ok) return [];

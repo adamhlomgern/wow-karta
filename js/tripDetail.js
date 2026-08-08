@@ -290,7 +290,7 @@ function setupPlaceModal() {
     const q = document.getElementById('place-search').value.trim();
     if (q.length < 2) { resultsEl.classList.remove('show'); resultsEl.innerHTML = ''; return; }
     placeModalSearchTimer = setTimeout(async () => {
-      const results = await searchPlace(q);
+      const results = await searchPlace(q, { near: { lat: trip.dest_lat, lon: trip.dest_lon } });
       if (results.length === 0) {
         resultsEl.innerHTML = '<div class="geo-result-item">Inga träffar</div>';
         resultsEl.classList.add('show');

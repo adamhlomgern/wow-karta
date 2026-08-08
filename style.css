@@ -351,13 +351,33 @@ a { color: var(--stuga); }
 #sidebar-header {
   padding: 20px 20px 14px;
   border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title edit"
+    "sub sub"
+    "add add";
+  column-gap: 8px;
 }
 #sidebar-header h1 {
+  grid-area: title;
+  min-width: 0;
+  align-self: center;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.2px;
   margin: 0 0 4px;
   color: var(--text);
+}
+#edit-trip-btn { grid-area: edit; align-self: center; }
+#trip-sub { grid-area: sub; }
+#add-place-btn {
+  grid-area: add;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 #sidebar-header p {
   font-size: 12.5px;
@@ -743,7 +763,7 @@ a { color: var(--stuga); }
     top: 54px;
     left: 0;
     right: 0;
-    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(46px + env(safe-area-inset-bottom, 0px));
     width: auto;
     height: auto;
     margin: 0;
@@ -758,7 +778,7 @@ a { color: var(--stuga); }
     display: flex;
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    height: calc(46px + env(safe-area-inset-bottom, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
     background: var(--panel);
     border-top: 1px solid var(--border);
@@ -783,7 +803,7 @@ a { color: var(--stuga); }
     justify-content: center;
     position: fixed;
     right: 16px;
-    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 16px);
+    bottom: calc(46px + env(safe-area-inset-bottom, 0px) + 16px);
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -801,10 +821,22 @@ a { color: var(--stuga); }
      kompaktare, göm redundant info (legend upprepar redan filterchipsens
      färger/etiketter) och låt filterraderna scrolla horisontellt istället
      för att radbryta till flera rader. */
-  #sidebar-header { padding: 12px 16px 10px; }
+  #sidebar-header {
+    padding: 12px 16px 10px;
+    grid-template-areas: "title add";
+  }
   #sidebar-header h1 { font-size: 15px; }
   #trip-sub { display: none; }
-  #sidebar-header .btn-primary { margin-top: 8px !important; padding: 8px; font-size: 13px; }
+  #edit-trip-btn { display: none; }
+  #add-place-btn {
+    width: 34px;
+    height: 34px;
+    margin-top: 0;
+    padding: 0;
+    border-radius: 8px;
+    align-self: center;
+  }
+  #add-place-btn .btn-label { display: none; }
   #filter-row, #amenity-filter-row {
     flex-wrap: nowrap;
     overflow-x: auto;
