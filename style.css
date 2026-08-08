@@ -800,6 +800,8 @@ a { color: var(--stuga); }
     scrollbar-width: none;
     padding-top: 8px;
     padding-bottom: 8px;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
   }
   #filter-row::-webkit-scrollbar, #amenity-filter-row::-webkit-scrollbar { display: none; }
   .filter-chip, .amenity-chip { flex-shrink: 0; }
